@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { scrypt } from 'crypto';
 import * as fs from 'fs/promises'
 import * as qiniu from 'qiniu'
 import { BaseResponse } from './response';
 import { VideoEntity } from './video/video.entity';
 import { VideoService } from './video/video.service';
 const process = require('child_process')
-
 var base_absolute_path = '/Users/chenchanghang/Desktop/tools-server/'
 var video2gif_absolute_path = '/Users/chenchanghang/Desktop/tools-server/script/video2gif.py'
 
@@ -70,8 +70,8 @@ export class AppService {
   // 用户上传的文件要把他保存到本地
   async upload(file): Promise<VideoEntity> {
     var video_name_array = file.originalname.split('.')
-    var video_name = video_name_array[0] + '-' + new Date().getTime() + video_name_array[1]
-    var video_absolute_path = base_absolute_path + file.originalname
+    var video_name = encodeURI(video_name_array[0] + '-' + new Date().getTime()) + "." + video_name_array[1]
+    var video_absolute_path = base_absolute_path + video_name
     var gif_name = file.originalname.split('.')[0] + '.gif'
     var gif_absolute_path = base_absolute_path + gif_name
     
@@ -80,7 +80,7 @@ export class AppService {
     var response = new BaseResponse()
 
     return new Promise((resolve, reject) => {
-      fs.writeFile(gif_absolute_path, file.buffer).then(() => {
+      fs.writeFile(video_absolute_path, file.buffer).then(() => {
         console.log('文件写入成功')
 
         console.log('step 2 - 开始上传视频至七牛云')
