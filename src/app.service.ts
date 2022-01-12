@@ -6,8 +6,8 @@ import { BaseResponse } from './response';
 import { VideoEntity } from './video/video.entity';
 import { VideoService } from './video/video.service';
 const process = require('child_process')
-var base_absolute_path = '/Users/chenchanghang/Desktop/tools-server/'
-var video2gif_absolute_path = '/Users/chenchanghang/Desktop/tools-server/script/video2gif.py'
+var base_absolute_path = './'
+var video2gif_absolute_path = './script/video2gif.py'
 
 @Injectable()
 export class AppService {
